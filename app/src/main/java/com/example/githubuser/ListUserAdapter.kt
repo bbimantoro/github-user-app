@@ -28,13 +28,14 @@ class ListUserAdapter(private val listUsers: ArrayList<User>) :
             .load(avatar)
             .into(holder.binding.imgItemAvatar)
 
-        holder.apply {
-            binding.tvItemName.text = name
-            binding.tvItemLocation.text = location
-            binding.tvItemCompany.text = company
-            itemView.setOnClickListener {
-                onItemClickCallback.onItemClicked(listUsers[holder.adapterPosition])
-            }
+        holder.binding.apply {
+            tvItemName.text = name
+            tvItemLocation.text = location
+            tvItemCompany.text = company
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClickCallback.onItemClicked(listUsers[holder.adapterPosition])
         }
 
     }

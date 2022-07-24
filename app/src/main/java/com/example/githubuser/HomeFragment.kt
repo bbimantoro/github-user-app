@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.githubuser.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -28,15 +30,10 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         (activity as AppCompatActivity).supportActionBar?.title = "Github User's"
-        setHasOptionsMenu(true)
 
         binding.rvGithubUsers.setHasFixedSize(true)
         list.addAll(listUsers)
         showRecyclerList()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private val listUsers: ArrayList<User>
@@ -78,7 +75,9 @@ class HomeFragment : Fragment() {
 
         listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: User) {
-                TODO("Not yet implemented")
+                val toDetailFragment =
+                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(data)
+                findNavController().navigate(toDetailFragment)
             }
         })
 
