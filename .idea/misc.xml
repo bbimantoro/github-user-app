@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
+        <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/ic_github.xml" value="0.1" />
         <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/ic_outline_location_on_24.xml" value="0.1" />
+        <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/ic_outline_settings_24.xml" value="0.1" />
+        <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/drawable/splah_background.xml" value="0.1" />
         <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/layout/activity_detail.xml" value="0.14130434782608695" />
         <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/layout/activity_main.xml" value="0.14130434782608695" />
         <entry key="..\:/developments/dicoding/android/submission/GithubUser/app/src/main/res/layout/fragment_detail.xml" value="0.14130434782608695" />
