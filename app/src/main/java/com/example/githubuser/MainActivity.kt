@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.ActivityMainBinding
@@ -20,10 +21,7 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    companion object {
-        private const val TAG = "Main Activity"
-    }
+    private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +30,39 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Github User's"
 
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[MainViewModel::class.java]
+
+        mainViewModel.searchUser.observe(this) {
+            setSearchUser(it)
+        }
+
+
+        mainViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
     }
+
+    private fun setSearchUser(items: List<ItemsItem>) {
+        if (this.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            binding.rvGithubUsers.layoutManager = GridLayoutManager(this, 2)
+        } else {
+            binding.rvGithubUsers.layoutManager = LinearLayoutManager(this)
+        }
+        val adapter = ListUserAdapter(items)
+        binding.rvGithubUsers.adapter = adapter
+
+        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ItemsItem) {
+                val toDetailActivity = Intent(this@MainActivity, DetailActivity::class.java)
+                startActivity(toDetailActivity)
+            }
+        })
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
@@ -46,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    findUser(query)
+                    mainViewModel.showUser(query)
                 }
                 searchView.clearFocus()
                 return true
@@ -60,55 +90,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private fun findUser(query: String) {
-        showLoading(true)
-        val client = ApiConfig.getApiService().getSearchUser(query)
-        client.enqueue(object : Callback<SearchResponse> {
-            override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
-            ) {
-                showLoading(false)
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        showUser(responseBody.items)
-                    }
-                } else {
-                    Log.e(TAG, "onFailure : ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                showLoading(false)
-                Log.e(TAG, "onFailure : ${t.message}")
-            }
-        })
-    }
-
-    private fun showUser(items: List<ItemsItem>) {
-        if (this.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvGithubUsers.layoutManager = GridLayoutManager(this, 2)
-        } else {
-            binding.rvGithubUsers.layoutManager = LinearLayoutManager(this)
-        }
-        val listUserAdapter = ListUserAdapter(items)
-        listUserAdapter.notifyDataSetChanged()
-        binding.rvGithubUsers.adapter = listUserAdapter
-
-        listUserAdapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ItemsItem) {
-                val toDetailActivity = Intent(this@MainActivity, DetailActivity::class.java)
-                startActivity(toDetailActivity)
-            }
-        })
-    }
-
     private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
