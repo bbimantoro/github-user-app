@@ -13,6 +13,15 @@ class MainViewModel : ViewModel() {
     private val _searchUser = MutableLiveData<List<ItemsItem>>()
     val searchUser: LiveData<List<ItemsItem>> = _searchUser
 
+    private val _detailUser = MutableLiveData<GithubUserDetailResponse>()
+    val detailUser: LiveData<GithubUserDetailResponse> = _detailUser
+
+    private val _listFollowers = MutableLiveData<List<ItemsItem>>()
+    val listFollowers: LiveData<List<ItemsItem>> = _listFollowers
+
+    private val _listFollowing = MutableLiveData<List<ItemsItem>>()
+    val listFollowing: LiveData<List<ItemsItem>> = _listFollowing
+
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
@@ -20,13 +29,13 @@ class MainViewModel : ViewModel() {
         private const val TAG = "MainViewModel"
     }
 
-    fun showUser(query: String) {
+    fun findUser(query: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getSearchUser(query)
-        client.enqueue(object : Callback<SearchResponse> {
+        client.enqueue(object : Callback<GithubUserResponse> {
             override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
+                call: Call<GithubUserResponse>,
+                response: Response<GithubUserResponse>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {
@@ -36,11 +45,58 @@ class MainViewModel : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+            override fun onFailure(call: Call<GithubUserResponse>, t: Throwable) {
                 _isLoading.value = false
                 Log.e(TAG, "onFailure : ${t.message.toString()}")
             }
         })
+    }
+
+    fun listFollowersUser(login: String?) {
+        if (login != null) {
+            _isLoading.value = true
+            val client = ApiConfig.getApiService().getListFollowers(login)
+            client.enqueue(object : Callback<List<ItemsItem>> {
+                override fun onResponse(
+                    call: Call<List<ItemsItem>>,
+                    response: Response<List<ItemsItem>>
+                ) {
+                    _isLoading.value = false
+                    if (response.isSuccessful) {
+                        _listFollowers.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
+                    _isLoading.value = false
+                    Log.e(TAG, "onFailure : ${t.message}")
+                }
+            })
+        }
+    }
+
+    fun detailUser(login: String?) {
+        if (login != null) {
+            _isLoading.value = true
+            val client = ApiConfig.getApiService().getDetailUser(login)
+            client.enqueue(object : Callback<GithubUserDetailResponse> {
+                override fun onResponse(
+                    call: Call<GithubUserDetailResponse>,
+                    response: Response<GithubUserDetailResponse>
+                ) {
+                    Log.e(TAG, response.body().toString())
+                    if (response.isSuccessful) {
+                        _isLoading.value = false
+                        _detailUser.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<GithubUserDetailResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    Log.e(TAG, "onFailure : ${t.message.toString()}")
+                }
+            })
+        }
     }
 
 }
