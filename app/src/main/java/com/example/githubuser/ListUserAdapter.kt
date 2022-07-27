@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubuser.databinding.ItemRowUserBinding
 
-class ListUserAdapter(private val listUsers: ArrayList<User>) :
+class ListUserAdapter(private val listUsers: List<ItemsItem>) :
     RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
@@ -22,17 +22,14 @@ class ListUserAdapter(private val listUsers: ArrayList<User>) :
     )
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (name, avatar, location, company) = listUsers[position]
+        val result = listUsers[position]
 
         Glide.with(holder.itemView.context)
-            .load(avatar)
+            .load(result.avatarUrl)
             .into(holder.binding.imgItemAvatar)
 
-        holder.binding.apply {
-            tvItemName.text = name
-            tvItemLocation.text = location
-            tvItemCompany.text = company
-        }
+        holder.binding.tvItemUsername.text = result.login
+        holder.binding.tvType.text = result.type
 
         holder.itemView.setOnClickListener {
             onItemClickCallback.onItemClicked(listUsers[holder.adapterPosition])
@@ -43,6 +40,6 @@ class ListUserAdapter(private val listUsers: ArrayList<User>) :
     override fun getItemCount(): Int = listUsers.size
 
     interface OnItemClickCallback {
-        fun onItemClicked(data: User)
+        fun onItemClicked(data: ItemsItem)
     }
 }
