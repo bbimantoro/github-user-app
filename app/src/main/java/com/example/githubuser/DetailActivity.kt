@@ -85,6 +85,7 @@ class DetailActivity : AppCompatActivity() {
             tvRepository.text = user.publicRepos.toString()
             tvFollowers.text = user.followers.toString()
             tvFollowing.text = user.following.toString()
+
         }
     }
 

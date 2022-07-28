@@ -13,6 +13,7 @@ class FollowerFragment : Fragment() {
 
     private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var mainViewModel: MainViewModel
     private var login: String? = null
 
@@ -35,6 +36,8 @@ class FollowerFragment : Fragment() {
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
 
+        mainViewModel.listFollowersUser(login)
+
         mainViewModel.listFollowers.observe(viewLifecycleOwner) {
             setFollowersUser(it)
         }
@@ -42,15 +45,17 @@ class FollowerFragment : Fragment() {
         mainViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-
-        mainViewModel.listFollowersUser(login)
     }
 
     private fun setFollowersUser(items: List<ItemsItem>) {
-        binding.rvList.layoutManager = LinearLayoutManager(requireActivity())
+        val linearLayout = LinearLayoutManager(requireActivity())
 
-        val adapter = ListDetailUserAdapter(items)
-        binding.rvList.adapter = adapter
+        val listDetailUserAdapter = ListDetailUserAdapter(items)
+
+        binding.apply {
+            rvList.layoutManager = linearLayout
+            rvList.adapter = listDetailUserAdapter
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {

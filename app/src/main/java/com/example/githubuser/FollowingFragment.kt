@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.ItemRowUserDetailBinding
-import kotlin.math.log
 
 class FollowingFragment : Fragment() {
 
@@ -36,11 +35,11 @@ class FollowingFragment : Fragment() {
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
 
+        mainViewModel.listFollowingUser(login)
+
         mainViewModel.listFollowing.observe(viewLifecycleOwner) {
             setFollowingUser(it)
         }
-
-        mainViewModel.listFollowingUser(login)
 
         mainViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -48,10 +47,14 @@ class FollowingFragment : Fragment() {
     }
 
     private fun setFollowingUser(items: List<ItemsItem>) {
-        binding.rvList.layoutManager = LinearLayoutManager(requireActivity())
+        val linearLayout = LinearLayoutManager(requireActivity())
 
-        val adapter = ListDetailUserAdapter(items)
-        binding.rvList.adapter = adapter
+        val listDetailUserAdapter = ListDetailUserAdapter(items)
+
+        binding.apply {
+            rvList.layoutManager = linearLayout
+            rvList.adapter = listDetailUserAdapter
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
