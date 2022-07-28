@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
 import com.example.githubuser.databinding.ItemRowUserBinding
 
 class GithubUserAdapter(private val listUsers: List<ItemsItem>) :
@@ -28,12 +29,13 @@ class GithubUserAdapter(private val listUsers: List<ItemsItem>) :
 
         Glide.with(holder.itemView.context)
             .load(result.avatarUrl)
+            .thumbnail(
+                Glide.with(holder.itemView.context)
+                    .load(R.drawable.ic_baseline_image_not_supported_24)
+            )
             .into(holder.binding.imgItemAvatar)
 
-        holder.binding.apply {
-            tvItemUsername.text = result.login
-            tvType.text = result.type
-        }
+        holder.binding.tvItemUsername.text = result.login
 
         holder.itemView.setOnClickListener {
             onItemClickCallback.onItemClicked(listUsers[holder.adapterPosition])

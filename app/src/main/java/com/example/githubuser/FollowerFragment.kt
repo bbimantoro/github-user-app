@@ -15,16 +15,6 @@ class FollowerFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var login: String? = null
-    private lateinit var viewModel: FollowerViewModel
-
-    private fun setFollowersUser(items: List<ItemsItem>) {
-        val adapter = GithubUserDetailAdapter(items)
-        binding.rvGithubUsers.adapter = adapter
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,12 +30,11 @@ class FollowerFragment : Fragment() {
 
         login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
 
-        viewModel = ViewModelProvider(
+        val viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[FollowerViewModel::class.java]
 
-        binding.rvGithubUsers.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvGithubUsers.layoutManager = layoutManager
 
@@ -58,6 +47,15 @@ class FollowerFragment : Fragment() {
         }
 
         viewModel.getFollowersUser(login)
+    }
+
+    private fun setFollowersUser(items: List<ItemsItem>) {
+        val adapter = GithubUserDetailAdapter(items)
+        binding.rvGithubUsers.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

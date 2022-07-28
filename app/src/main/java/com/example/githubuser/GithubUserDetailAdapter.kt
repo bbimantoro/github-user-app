@@ -10,29 +10,21 @@ import com.example.githubuser.databinding.ItemRowUserBinding
 class GithubUserDetailAdapter(private val listUsers: List<ItemsItem>) :
     RecyclerView.Adapter<GithubUserDetailAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_row_user, parent, false)
-        return ListViewHolder(view)
+        val binding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listUsers[position])
+        val result = listUsers[position]
+
+        Glide.with(holder.itemView.context)
+            .load(result.avatarUrl)
+            .into(holder.binding.imgItemAvatar)
+
+        holder.binding.tvItemUsername.text = result.login
     }
 
     override fun getItemCount(): Int = listUsers.size
 
-    class ListViewHolder(viewItem: View) : RecyclerView.ViewHolder(viewItem) {
-        private val binding = ItemRowUserBinding.bind(itemView)
-
-        fun bind(items: ItemsItem) {
-            binding.apply {
-                Glide.with(itemView.context)
-                    .load(items.avatarUrl)
-                    .into(imgItemAvatar)
-
-                tvItemUsername.text = items.login
-                tvType.text = items.type
-            }
-        }
-    }
+    class ListViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -12,9 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var viewModel: MainViewModel
 
-    private lateinit var bundle: Bundle
     private var login: String? = null
     private var avatar: String? = null
 
@@ -27,6 +25,33 @@ class DetailActivity : AppCompatActivity() {
             R.string.tab_text_1,
             R.string.tab_text_2
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportActionBar?.title = "Detail User"
+
+        login = intent.getStringExtra(EXTRA_USERNAME)
+        avatar = intent.getStringExtra(EXTRA_AVATAR)
+
+        val viewModel =
+            ViewModelProvider(
+                this,
+                ViewModelProvider.NewInstanceFactory()
+            )[MainViewModel::class.java]
+
+        viewModel.detailUser(login)
+        viewModel.detailUser.observe(this) {
+            setDetailUser(it)
+        }
+
+        val mBundle = Bundle().apply {
+            putString(EXTRA_USERNAME, login)
+        }
+        setPagerAdapter(mBundle)
     }
 
     private fun setPagerAdapter(bundle: Bundle) {
@@ -53,40 +78,5 @@ class DetailActivity : AppCompatActivity() {
             tvFollowers.text = user.followers.toString()
             tvFollowing.text = user.following.toString()
         }
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        supportActionBar?.title = "Detail User"
-
-        login = intent.getStringExtra(EXTRA_USERNAME)
-        avatar = intent.getStringExtra(EXTRA_AVATAR)
-
-        viewModel =
-            ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[MainViewModel::class.java]
-
-        viewModel.detailUser(login)
-        viewModel.detailUser.observe(this) {
-            setDetailUser(it)
-        }
-
-        viewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
-        bundle = Bundle().apply {
-            putString(EXTRA_USERNAME, login)
-        }
-        setPagerAdapter(bundle)
     }
 }
