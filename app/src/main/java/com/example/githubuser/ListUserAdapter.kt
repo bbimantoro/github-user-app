@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.example.githubuser.databinding.ItemRowUserBinding
 
 class ListUserAdapter(private val listUsers: List<ItemsItem>) :
-    RecyclerView.Adapter<ListUserAdapter.ListViewHolder>() {
+    RecyclerView.Adapter<ListUserAdapter.ListUserViewHolder>() {
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -15,13 +15,14 @@ class ListUserAdapter(private val listUsers: List<ItemsItem>) :
         this.onItemClickCallback = onItemCallback
     }
 
-    class ListViewHolder(var binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root)
+    class ListUserViewHolder(var binding: ItemRowUserBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ListUserViewHolder(
         ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListUserViewHolder, position: Int) {
         val result = listUsers[position]
 
         Glide.with(holder.itemView.context)

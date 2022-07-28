@@ -2,19 +2,18 @@ package com.example.githubuser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubuser.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlin.math.log
 
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var bundle: Bundle
     private var login: String? = null
     private var avatar: String? = null
 
@@ -55,12 +54,22 @@ class DetailActivity : AppCompatActivity() {
 
         mainViewModel.detailUser(login)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this)
-        binding.viewPager.adapter = sectionsPagerAdapter
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
+        bundle = Bundle().apply {
+            putString(EXTRA_USERNAME, login)
+        }
+        setPagerAdapter(bundle)
 
+
+    }
+
+    private fun setPagerAdapter(bundle: Bundle) {
+        val sectionsPagerAdapter = SectionsPagerAdapter(this@DetailActivity, bundle)
+        binding.apply {
+            viewPager.adapter = sectionsPagerAdapter
+            TabLayoutMediator(tabs, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+        }
     }
 
     private fun setDetailUser(user: GithubUserDetailResponse) {

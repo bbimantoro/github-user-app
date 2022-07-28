@@ -23,8 +23,6 @@ data class ItemsItem(
     val type: String,
 
     @field:SerializedName("avatar_url")
-    val avatarUrl: String,
+    val avatarUrl: String
 
-    @field:SerializedName("id")
-    val id: Int
 )

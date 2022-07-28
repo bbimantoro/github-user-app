@@ -52,6 +52,30 @@ class MainViewModel : ViewModel() {
         })
     }
 
+    fun detailUser(login: String?) {
+        if (login != null) {
+            _isLoading.value = true
+            val client = ApiConfig.getApiService().getDetailUser(login)
+            client.enqueue(object : Callback<GithubUserDetailResponse> {
+                override fun onResponse(
+                    call: Call<GithubUserDetailResponse>,
+                    response: Response<GithubUserDetailResponse>
+                ) {
+                    _isLoading.value = false
+                    Log.e(TAG, response.body().toString())
+                    if (response.isSuccessful) {
+                        _detailUser.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<GithubUserDetailResponse>, t: Throwable) {
+                    _isLoading.value = false
+                    Log.e(TAG, "onFailure : ${t.message.toString()}")
+                }
+            })
+        }
+    }
+
     fun listFollowersUser(login: String?) {
         if (login != null) {
             _isLoading.value = true
@@ -75,23 +99,22 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun detailUser(login: String?) {
+    fun listFollowingUser(login: String?) {
         if (login != null) {
             _isLoading.value = true
-            val client = ApiConfig.getApiService().getDetailUser(login)
-            client.enqueue(object : Callback<GithubUserDetailResponse> {
+            val client = ApiConfig.getApiService().getListFollowing(login)
+            client.enqueue(object : Callback<List<ItemsItem>> {
                 override fun onResponse(
-                    call: Call<GithubUserDetailResponse>,
-                    response: Response<GithubUserDetailResponse>
+                    call: Call<List<ItemsItem>>,
+                    response: Response<List<ItemsItem>>
                 ) {
-                    Log.e(TAG, response.body().toString())
+                    _isLoading.value = false
                     if (response.isSuccessful) {
-                        _isLoading.value = false
-                        _detailUser.value = response.body()
+                        _listFollowing.value = response.body()
                     }
                 }
 
-                override fun onFailure(call: Call<GithubUserDetailResponse>, t: Throwable) {
+                override fun onFailure(call: Call<List<ItemsItem>>, t: Throwable) {
                     _isLoading.value = false
                     Log.e(TAG, "onFailure : ${t.message.toString()}")
                 }

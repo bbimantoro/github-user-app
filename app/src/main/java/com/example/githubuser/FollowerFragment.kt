@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.githubuser.databinding.ItemFollowersFollowingBinding
+import com.example.githubuser.databinding.ItemRowUserDetailBinding
 
-class FollowersFragment : Fragment() {
+class FollowerFragment : Fragment() {
 
-    private var _binding: ItemFollowersFollowingBinding? = null
+    private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var mainViewModel: MainViewModel
     private var login: String? = null
@@ -21,19 +21,19 @@ class FollowersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = ItemFollowersFollowingBinding.inflate(inflater, container, false)
+        _binding = ItemRowUserDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
+
         mainViewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
-
-        mainViewModel.listFollowersUser(login)
 
         mainViewModel.listFollowers.observe(viewLifecycleOwner) {
             setFollowersUser(it)
@@ -42,13 +42,15 @@ class FollowersFragment : Fragment() {
         mainViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
+
+        mainViewModel.listFollowersUser(login)
     }
 
     private fun setFollowersUser(items: List<ItemsItem>) {
-        binding.rvFollowersFollowing.layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvList.layoutManager = LinearLayoutManager(requireActivity())
 
-        val adapter = FollowersFollowingAdapter(items)
-        binding.rvFollowersFollowing.adapter = adapter
+        val adapter = ListDetailUserAdapter(items)
+        binding.rvList.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {

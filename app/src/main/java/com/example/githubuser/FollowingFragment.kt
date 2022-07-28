@@ -5,19 +5,61 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.githubuser.databinding.ItemFollowersFollowingBinding
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuser.databinding.ItemRowUserDetailBinding
+import kotlin.math.log
 
 class FollowingFragment : Fragment() {
 
-    private var _binding: ItemFollowersFollowingBinding? = null
+    private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
+    private lateinit var mainViewModel: MainViewModel
+    private var login: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = ItemFollowersFollowingBinding.inflate(inflater, container, false)
+        _binding = ItemRowUserDetailBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
+
+        mainViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[MainViewModel::class.java]
+
+        mainViewModel.listFollowing.observe(viewLifecycleOwner) {
+            setFollowingUser(it)
+        }
+
+        mainViewModel.listFollowingUser(login)
+
+        mainViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+    }
+
+    private fun setFollowingUser(items: List<ItemsItem>) {
+        binding.rvList.layoutManager = LinearLayoutManager(requireActivity())
+
+        val adapter = ListDetailUserAdapter(items)
+        binding.rvList.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
