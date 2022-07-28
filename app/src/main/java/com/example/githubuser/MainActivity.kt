@@ -3,14 +3,12 @@ package com.example.githubuser
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.ActivityMainBinding
 
@@ -31,6 +29,10 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
 
+        binding.rvGithubUsers.setHasFixedSize(true)
+        val layoutManager = LinearLayoutManager(this)
+        binding.rvGithubUsers.layoutManager = layoutManager
+
         mainViewModel.searchUser.observe(this) {
             setSearchUser(it)
         }
@@ -39,6 +41,21 @@ class MainActivity : AppCompatActivity() {
             showLoading(it)
         }
 
+    }
+
+    private fun setSearchUser(items: List<ItemsItem>) {
+        val adapter = GithubUserAdapter(items)
+        binding.rvGithubUsers.adapter = adapter
+
+        adapter.setOnItemClickCallback(object : GithubUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ItemsItem) {
+                val toDetailActivity = Intent(this@MainActivity, DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.EXTRA_USERNAME, data.login)
+                    putExtra(DetailActivity.EXTRA_AVATAR, data.avatarUrl)
+                }
+                startActivity(toDetailActivity)
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,27 +82,6 @@ class MainActivity : AppCompatActivity() {
         })
 
         return true
-    }
-
-    private fun setSearchUser(items: List<ItemsItem>) {
-        if (this.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.rvGithubUsers.layoutManager = GridLayoutManager(this, 2)
-        } else {
-            binding.rvGithubUsers.layoutManager = LinearLayoutManager(this)
-        }
-        val adapter = ListUserAdapter(items)
-        binding.rvGithubUsers.adapter = adapter
-
-        adapter.setOnItemClickCallback(object : ListUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ItemsItem) {
-                val toDetailActivity = Intent(this@MainActivity, DetailActivity::class.java).apply {
-
-                    putExtra(DetailActivity.EXTRA_USERNAME, data.login)
-                    putExtra(DetailActivity.EXTRA_AVATAR, data.avatarUrl)
-                }
-                startActivity(toDetailActivity)
-            }
-        })
     }
 
     private fun showLoading(isLoading: Boolean) {

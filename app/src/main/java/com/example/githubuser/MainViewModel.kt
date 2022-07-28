@@ -65,6 +65,8 @@ class MainViewModel : ViewModel() {
                     Log.e(TAG, response.body().toString())
                     if (response.isSuccessful) {
                         _detailUser.value = response.body()
+                    } else {
+                        Log.e(TAG, "onFailure : ${response.message()}")
                     }
                 }
 
@@ -88,6 +90,8 @@ class MainViewModel : ViewModel() {
                     _isLoading.value = false
                     if (response.isSuccessful) {
                         _listFollowers.value = response.body()
+                    } else {
+                        Log.e(TAG, "onFailure : ${response.message()}")
                     }
                 }
 
@@ -111,6 +115,8 @@ class MainViewModel : ViewModel() {
                     _isLoading.value = false
                     if (response.isSuccessful) {
                         _listFollowing.value = response.body()
+                    } else {
+                        Log.e(TAG, "onFailure : ${response.message()}")
                     }
                 }
 

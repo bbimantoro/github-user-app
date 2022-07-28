@@ -36,6 +36,9 @@ class FollowerFragment : Fragment() {
             ViewModelProvider.NewInstanceFactory()
         )[MainViewModel::class.java]
 
+        val layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvList.layoutManager = layoutManager
+
         mainViewModel.listFollowersUser(login)
 
         mainViewModel.listFollowers.observe(viewLifecycleOwner) {
@@ -48,14 +51,8 @@ class FollowerFragment : Fragment() {
     }
 
     private fun setFollowersUser(items: List<ItemsItem>) {
-        val linearLayout = LinearLayoutManager(requireActivity())
-
-        val listDetailUserAdapter = ListDetailUserAdapter(items)
-
-        binding.apply {
-            rvList.layoutManager = linearLayout
-            rvList.adapter = listDetailUserAdapter
-        }
+        val adapter = GithubUserDetailAdapter(items)
+        binding.rvList.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {
