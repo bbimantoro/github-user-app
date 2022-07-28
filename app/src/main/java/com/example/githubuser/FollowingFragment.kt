@@ -14,8 +14,18 @@ class FollowingFragment : Fragment() {
     private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewModel: FollowingViewModel
     private var login: String? = null
+
+    private fun setFollowingUser(items: List<ItemsItem>) {
+        val adapter = GithubUserDetailAdapter(items)
+        binding.rvGithubUsers.adapter = adapter
+    }
+
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,33 +41,23 @@ class FollowingFragment : Fragment() {
 
         login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
 
-        mainViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
-        )[MainViewModel::class.java]
+        )[FollowingViewModel::class.java]
 
+        binding.rvGithubUsers.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvList.layoutManager = layoutManager
+        binding.rvGithubUsers.layoutManager = layoutManager
 
-        mainViewModel.listFollowingUser(login)
-
-        mainViewModel.listFollowing.observe(viewLifecycleOwner) {
+        viewModel.listFollowing.observe(viewLifecycleOwner) {
             setFollowingUser(it)
         }
+        viewModel.getFollowingUser(login)
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-    }
-
-    private fun setFollowingUser(items: List<ItemsItem>) {
-
-        val adapter = GithubUserDetailAdapter(items)
-        binding.rvList.adapter = adapter
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

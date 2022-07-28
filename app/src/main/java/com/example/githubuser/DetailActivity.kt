@@ -12,7 +12,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
+
     private lateinit var bundle: Bundle
     private var login: String? = null
     private var avatar: String? = null
@@ -28,42 +29,8 @@ class DetailActivity : AppCompatActivity() {
         )
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        supportActionBar?.title = "Detail User"
-
-        login = intent.getStringExtra(EXTRA_USERNAME)
-        avatar = intent.getStringExtra(EXTRA_AVATAR)
-
-        mainViewModel =
-            ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[MainViewModel::class.java]
-
-        mainViewModel.detailUser.observe(this) {
-            setDetailUser(it)
-        }
-
-        mainViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
-        mainViewModel.detailUser(login)
-
-        bundle = Bundle().apply {
-            putString(EXTRA_USERNAME, login)
-        }
-        setPagerAdapter(bundle)
-
-
-    }
-
     private fun setPagerAdapter(bundle: Bundle) {
-        val sectionsPagerAdapter = SectionsPagerAdapter(this@DetailActivity, bundle)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this, bundle)
         binding.apply {
             viewPager.adapter = sectionsPagerAdapter
             TabLayoutMediator(tabs, viewPager) { tab, position ->
@@ -85,11 +52,41 @@ class DetailActivity : AppCompatActivity() {
             tvRepository.text = user.publicRepos.toString()
             tvFollowers.text = user.followers.toString()
             tvFollowing.text = user.following.toString()
-
         }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportActionBar?.title = "Detail User"
+
+        login = intent.getStringExtra(EXTRA_USERNAME)
+        avatar = intent.getStringExtra(EXTRA_AVATAR)
+
+        viewModel =
+            ViewModelProvider(
+                this,
+                ViewModelProvider.NewInstanceFactory()
+            )[MainViewModel::class.java]
+
+        viewModel.detailUser(login)
+        viewModel.detailUser.observe(this) {
+            setDetailUser(it)
+        }
+
+        viewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
+
+        bundle = Bundle().apply {
+            putString(EXTRA_USERNAME, login)
+        }
+        setPagerAdapter(bundle)
     }
 }

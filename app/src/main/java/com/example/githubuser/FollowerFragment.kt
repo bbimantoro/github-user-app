@@ -14,8 +14,17 @@ class FollowerFragment : Fragment() {
     private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mainViewModel: MainViewModel
     private var login: String? = null
+    private lateinit var viewModel: FollowerViewModel
+
+    private fun setFollowersUser(items: List<ItemsItem>) {
+        val adapter = GithubUserDetailAdapter(items)
+        binding.rvGithubUsers.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,32 +40,24 @@ class FollowerFragment : Fragment() {
 
         login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
 
-        mainViewModel = ViewModelProvider(
+        viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
-        )[MainViewModel::class.java]
+        )[FollowerViewModel::class.java]
 
+        binding.rvGithubUsers.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvList.layoutManager = layoutManager
+        binding.rvGithubUsers.layoutManager = layoutManager
 
-        mainViewModel.listFollowersUser(login)
-
-        mainViewModel.listFollowers.observe(viewLifecycleOwner) {
+        viewModel.listFollowers.observe(viewLifecycleOwner) {
             setFollowersUser(it)
         }
 
-        mainViewModel.isLoading.observe(viewLifecycleOwner) {
+        viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
-    }
 
-    private fun setFollowersUser(items: List<ItemsItem>) {
-        val adapter = GithubUserDetailAdapter(items)
-        binding.rvList.adapter = adapter
-    }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewModel.getFollowersUser(login)
     }
 
     override fun onDestroy() {
