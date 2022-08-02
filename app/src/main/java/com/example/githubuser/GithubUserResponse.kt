@@ -10,11 +10,11 @@ data class GithubUserResponse(
 
 data class ItemsItem(
 
+    @field:SerializedName("id")
+    val id: Int? = null,
+
     @field:SerializedName("login")
     val login: String,
-
-    @field:SerializedName("type")
-    val type: String,
 
     @field:SerializedName("avatar_url")
     val avatarUrl: String

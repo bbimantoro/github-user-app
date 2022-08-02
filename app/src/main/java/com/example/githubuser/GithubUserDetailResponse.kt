@@ -10,9 +10,6 @@ data class GithubUserDetailResponse(
     @field:SerializedName("company")
     val company: String,
 
-    @field:SerializedName("id")
-    val id: Int,
-
     @field:SerializedName("public_repos")
     val publicRepos: Int,
 

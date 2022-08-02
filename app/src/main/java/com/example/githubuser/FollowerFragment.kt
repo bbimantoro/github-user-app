@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.ItemRowUserDetailBinding
 
@@ -13,6 +13,7 @@ class FollowerFragment : Fragment() {
 
     private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
+    private val followerViewModel by viewModels<FollowerViewModel>()
 
     private var login: String? = null
 
@@ -30,23 +31,18 @@ class FollowerFragment : Fragment() {
 
         login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[FollowerViewModel::class.java]
-
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvGithubUsers.layoutManager = layoutManager
 
-        viewModel.listFollowers.observe(viewLifecycleOwner) {
+        followerViewModel.listFollowers.observe(viewLifecycleOwner) {
             setFollowersUser(it)
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
+        followerViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
 
-        viewModel.getFollowersUser(login)
+        followerViewModel.getFollowerUser(login)
     }
 
     private fun setFollowersUser(items: List<ItemsItem>) {

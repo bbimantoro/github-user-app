@@ -11,6 +11,7 @@
 
     <string name="search">Search</string>
     <string name="search_hint">Cari Username</string>
+    <string name="favorite">Favorite</string>
 
     <string name="tab_text_1">Followers</string>
     <string name="tab_text_2">Following</string>

@@ -2,9 +2,8 @@ package com.example.githubuser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubuser.databinding.ActivityDetailBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -12,20 +11,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private val mainViewModel by viewModels<MainViewModel>()
 
     private var login: String? = null
     private var avatar: String? = null
-
-    companion object {
-        const val EXTRA_USERNAME = "extra_username"
-        const val EXTRA_AVATAR = "extra_avatar"
-
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,14 +26,8 @@ class DetailActivity : AppCompatActivity() {
         login = intent.getStringExtra(EXTRA_USERNAME)
         avatar = intent.getStringExtra(EXTRA_AVATAR)
 
-        val viewModel =
-            ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
-            )[MainViewModel::class.java]
-
-        viewModel.detailUser(login)
-        viewModel.detailUser.observe(this) {
+        mainViewModel.detailUser(login)
+        mainViewModel.detailUser.observe(this) {
             setDetailUser(it)
         }
 
@@ -78,5 +61,16 @@ class DetailActivity : AppCompatActivity() {
             tvFollowers.text = user.followers.toString()
             tvFollowing.text = user.following.toString()
         }
+    }
+
+    companion object {
+        const val EXTRA_USERNAME = "extra_username"
+        const val EXTRA_AVATAR = "extra_avatar"
+
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 }

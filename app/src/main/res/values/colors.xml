@@ -5,4 +5,5 @@
     <color name="blue_gray_light">#4f5b62</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="placeholder">#6FB6B6B6</color>
 </resources>

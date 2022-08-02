@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubuser.databinding.ItemRowUserDetailBinding
@@ -13,6 +14,7 @@ class FollowingFragment : Fragment() {
 
     private var _binding: ItemRowUserDetailBinding? = null
     private val binding get() = _binding!!
+    private val followingViewModel by viewModels<FollowingViewModel>()
 
     private var login: String? = null
 
@@ -30,20 +32,15 @@ class FollowingFragment : Fragment() {
 
         login = arguments?.getString(DetailActivity.EXTRA_USERNAME)
 
-        val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
-        )[FollowingViewModel::class.java]
-
         val layoutManager = LinearLayoutManager(requireActivity())
         binding.rvGithubUsers.layoutManager = layoutManager
 
-        viewModel.listFollowing.observe(viewLifecycleOwner) {
+        followingViewModel.listFollowing.observe(viewLifecycleOwner) {
             setFollowingUser(it)
         }
-        viewModel.getFollowingUser(login)
+        followingViewModel.getFollowingUser(login)
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
+        followingViewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
         }
     }

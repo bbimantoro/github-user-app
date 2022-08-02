@@ -16,14 +16,10 @@ class FollowingViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object {
-        private const val TAG = "FollowingViewModel"
-    }
-
     fun getFollowingUser(login: String?) {
         if (login != null) {
             _isLoading.value = true
-            val client = ApiConfig.getApiService().getListFollowing(login)
+            val client = ApiConfig.getApiService().getFollowerFollowingUser(login, "following")
             client.enqueue(object : Callback<List<ItemsItem>> {
                 override fun onResponse(
                     call: Call<List<ItemsItem>>,
@@ -43,6 +39,10 @@ class FollowingViewModel : ViewModel() {
                 }
             })
         }
+    }
+
+    companion object {
+        private const val TAG = "FollowingViewModel"
     }
 
 }
