@@ -17,6 +17,6 @@ interface GithubDao {
     fun delete(userFavorite: GithubEntity)
 
     @Query("SELECT * FROM user_favorites WHERE id = :id")
-    fun getUserFavorite(id: Int): Flow<GithubEntity>
+    fun getUserFavorite(id: Int): LiveData<List<GithubEntity>>
 
 }

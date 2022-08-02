@@ -15,7 +15,7 @@ abstract class GithubRoomDatabase : RoomDatabase() {
         private var INSTANCE: GithubRoomDatabase? = null
 
         @JvmStatic
-        fun getDatabase(context: Context): GithubRoomDatabase {
+        fun getInstance(context: Context): GithubRoomDatabase {
             if (INSTANCE == null) {
                 synchronized(GithubRoomDatabase::class.java) {
                     INSTANCE = Room.databaseBuilder(

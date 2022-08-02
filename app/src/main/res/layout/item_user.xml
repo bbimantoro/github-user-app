@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:layout_margin="8dp"
     android:padding="8dp">
@@ -22,26 +22,20 @@
 
 
     <TextView
-        android:id="@+id/tvItemUsername"
+        android:id="@+id/tvItemLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="@color/black"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imgItemAvatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/imgItemAvatar"
         app:layout_constraintTop_toTopOf="@+id/imgItemAvatar"
         tools:text="@string/login" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="70dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
