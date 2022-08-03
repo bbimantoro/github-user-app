@@ -47,22 +47,6 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setDetailUser(user: GithubUserDetailResponse) {
-        binding.apply {
-            Glide.with(this@DetailActivity)
-                .load(user.avatarUrl)
-                .into(avatar)
-
-            tvName.text = user.name
-            tvUsername.text = user.login
-            tvCompany.text = user.company
-            tvLocation.text = user.location
-            tvRepository.text = user.publicRepos.toString()
-            tvFollowers.text = user.followers.toString()
-            tvFollowing.text = user.following.toString()
-        }
-    }
-
     companion object {
         const val EXTRA_USERNAME = "extra_username"
         const val EXTRA_AVATAR = "extra_avatar"

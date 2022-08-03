@@ -1,5 +1,6 @@
-package com.example.githubuser
+package com.example.githubuser.data.remote.retrofit
 
+import androidx.viewbinding.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,5 +23,4 @@ object ApiConfig {
             .build()
         return retrofit.create(ApiService::class.java)
     }
-
 }

@@ -3,10 +3,11 @@ package com.example.githubuser.ui
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.githubuser.data.repository.GithubRepository
 import com.example.githubuser.ui.viewmodel.UserFavoriteViewModel
 
-class ViewModelFactory private constructor(private val mApplication: Application) :
+class ViewModelFactory private constructor(
+    private val mApplication: Application
+) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")

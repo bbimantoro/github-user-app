@@ -16,17 +16,22 @@
         android:theme="@style/Theme.GithubUser"
         tools:targetApi="31">
         <activity
-            android:name=".DetailUserActivity"
+            android:name=".SettingThemeActivity"
             android:exported="false" />
         <activity
-            android:name=".UserFavoriteActivity"
+            android:name=".SplashScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserFavoriteActivity"
             android:exported="false" />
         <activity
             android:name=".DetailActivity"
-            android:exported="false"
-            android:parentActivityName=".DetailActivity" />
+            android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

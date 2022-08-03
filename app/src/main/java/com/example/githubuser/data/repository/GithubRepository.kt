@@ -2,11 +2,9 @@ package com.example.githubuser.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.example.githubuser.ApiService
 import com.example.githubuser.data.local.entity.GithubEntity
 import com.example.githubuser.data.local.room.GithubDao
 import com.example.githubuser.data.local.room.GithubRoomDatabase
-import com.example.githubuser.utils.AppExecutors
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -19,13 +17,13 @@ class GithubRepository(application: Application) {
         mGithubDao = db.githubDao()
     }
 
-    fun getAllUserFavorite(): LiveData<List<GithubEntity>> = mGithubDao.getAllUserFavorite()
+    fun getAllFavoriteUser(): LiveData<List<GithubEntity>> = mGithubDao.getAllUserFavorite()
 
-    fun insert(userFavorite: GithubEntity) {
-        executorService.execute { mGithubDao.insert(userFavorite) }
+    fun insert(favoriteUser: GithubEntity) {
+        executorService.execute { mGithubDao.insert(favoriteUser) }
     }
 
-    fun delete(userFavorite: GithubEntity) {
-        executorService.execute { mGithubDao.delete(userFavorite) }
+    fun delete(favoriteUser: GithubEntity) {
+        executorService.execute { mGithubDao.delete(favoriteUser) }
     }
 }

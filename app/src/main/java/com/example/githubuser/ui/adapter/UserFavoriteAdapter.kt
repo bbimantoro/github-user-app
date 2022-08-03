@@ -8,7 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.githubuser.R
 import com.example.githubuser.data.local.entity.GithubEntity
 import com.example.githubuser.databinding.ItemUserBinding
-import com.example.githubuser.ui.DetailUserActivity
+import com.example.githubuser.ui.UserDetailActivity
 
 class UserFavoriteAdapter : RecyclerView.Adapter<UserFavoriteAdapter.UserFavoriteViewHolder>() {
 
@@ -24,7 +24,7 @@ class UserFavoriteAdapter : RecyclerView.Adapter<UserFavoriteAdapter.UserFavorit
         TODO("Not yet implemented")
     }
 
-    class UserFavoriteViewHolder(private val binding: ItemUserBinding) :
+    inner class UserFavoriteViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(userFavorite: GithubEntity) {
             with(binding) {
@@ -38,8 +38,8 @@ class UserFavoriteAdapter : RecyclerView.Adapter<UserFavoriteAdapter.UserFavorit
                     .into(imgItemAvatar)
                 itemView.setOnClickListener {
                     val toDetailUserActivity =
-                        Intent(itemView.context, DetailUserActivity::class.java)
-                    itemView.context.startActivity(toDetailUserActivity)
+                        Intent(it.context, UserDetailActivity::class.java)
+                    it.context.startActivity(toDetailUserActivity)
                 }
             }
         }
