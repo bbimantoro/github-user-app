@@ -4,20 +4,20 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.githubuser.ui.UserFollowerFragment
-import com.example.githubuser.ui.UserFollowingFragment
+import com.example.githubuser.ui.UserFollowFragment
 
-class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
+class SectionsPagerAdapter(activity: AppCompatActivity, private val mBundle: Bundle) :
+    FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        val fragment : Fragment ? = null
-        val bundle = Bundle()
-        when (position) {
-            0 -> UserFollowerFragment()
-            1 -> UserFollowingFragment()
+        val fragment = UserFollowFragment()
+        if (position == 0) {
+            mBundle.putString(UserFollowFragment.ARG_TAB, UserFollowFragment.TAB_FOLLOWER)
+        } else {
+            mBundle.putString(UserFollowFragment.ARG_TAB, UserFollowFragment.TAB_FOLLOWING)
         }
-        fragment?.arguments = bundle
-        return fragment as Fragment
+        fragment.arguments = mBundle
+        return fragment
     }
 }

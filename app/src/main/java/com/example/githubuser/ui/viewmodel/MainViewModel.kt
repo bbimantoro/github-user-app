@@ -4,14 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.example.githubuser.data.remote.response.GithubUserResponse
 import com.example.githubuser.data.remote.response.ItemsItem
 import com.example.githubuser.data.remote.retrofit.ApiConfig
+import com.example.githubuser.data.repository.SettingPreferences
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val pref: SettingPreferences) : ViewModel() {
     private val _searchUser = MutableLiveData<List<ItemsItem>>()
     val searchUser: LiveData<List<ItemsItem>> = _searchUser
 
@@ -39,6 +41,10 @@ class MainViewModel : ViewModel() {
                 Log.e(TAG, "onFailure : ${t.message.toString()}")
             }
         })
+    }
+
+    fun getThemeSettings(): LiveData<Boolean> {
+        return pref.getThemeSetting().asLiveData()
     }
 
     companion object {

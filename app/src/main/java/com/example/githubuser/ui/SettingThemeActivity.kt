@@ -45,5 +45,12 @@ class SettingThemeActivity : AppCompatActivity() {
             settingThemeViewModel.saveThemeSetting(isChecked)
         }
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

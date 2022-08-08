@@ -20,24 +20,26 @@ class UserDetailViewModel(application: Application) : ViewModel() {
     val detailUser: LiveData<GithubUserDetailResponse> = _detailUser
 
 
-    fun detailUser(login: String) {
-        val client = ApiConfig.getApiService().getDetailUser(login)
-        client.enqueue(object : Callback<GithubUserDetailResponse> {
-            override fun onResponse(
-                call: Call<GithubUserDetailResponse>,
-                response: Response<GithubUserDetailResponse>
-            ) {
-                if (response.isSuccessful) {
-                    _detailUser.value = response.body()
-                } else {
-                    Log.e(TAG, "onFailure : ${response.message()}")
+    fun detailUser(login: String?) {
+        if (login != null) {
+            val client = ApiConfig.getApiService().getDetailUser(login)
+            client.enqueue(object : Callback<GithubUserDetailResponse> {
+                override fun onResponse(
+                    call: Call<GithubUserDetailResponse>,
+                    response: Response<GithubUserDetailResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        _detailUser.value = response.body()
+                    } else {
+                        Log.e(TAG, "onFailure : ${response.message()}")
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<GithubUserDetailResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure : ${t.message.toString()}")
-            }
-        })
+                override fun onFailure(call: Call<GithubUserDetailResponse>, t: Throwable) {
+                    Log.e(TAG, "onFailure : ${t.message.toString()}")
+                }
+            })
+        }
     }
 
     fun insert(favoriteUser: GithubEntity) {

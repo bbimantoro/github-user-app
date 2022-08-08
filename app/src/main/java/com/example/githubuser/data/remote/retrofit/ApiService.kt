@@ -14,11 +14,11 @@ interface ApiService {
 
     @GET("users/{login}")
     fun getDetailUser(
-        @Query("login") login: String
+        @Path("login") login: String
     ): Call<GithubUserDetailResponse>
 
     @GET("users/{login}/{type}")
-    fun getFollowerAndFollowingUser(
+    fun getFollowUser(
         @Path("login") login: String,
         @Path("type") type: String
     ): Call<List<ItemsItem>>
