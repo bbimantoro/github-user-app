@@ -8,15 +8,15 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface GithubDao {
     @Query("SELECT * FROM user_favorites")
-    fun getAllUserFavorite(): LiveData<List<GithubEntity>>
+    fun getAllUserFavorite(): Flow<List<GithubEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(userFavorite: GithubEntity)
 
-    @Delete
-    fun delete(userFavorite: GithubEntity)
+    @Query("DELETE FROM user_favorites WHERE id = :id")
+    fun delete(id: Int): Int
 
     @Query("SELECT * FROM user_favorites WHERE id = :id")
-    fun getUserFavorite(id: Int): LiveData<List<GithubEntity>>
+    fun getUserById(id: Int): LiveData<GithubEntity>
 
 }

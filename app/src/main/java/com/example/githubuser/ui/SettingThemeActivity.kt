@@ -28,7 +28,7 @@ class SettingThemeActivity : AppCompatActivity() {
         val settingThemeViewModel =
             ViewModelProvider(
                 this,
-                SettingViewModelFactory(pref)
+                ViewModelFactory(pref)
             )[SettingThemeViewModel::class.java]
 
         settingThemeViewModel.getThemeSettings().observe(this) { isDarkModeActive ->

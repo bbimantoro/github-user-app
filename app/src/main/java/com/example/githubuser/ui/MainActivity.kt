@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         val pref = SettingPreferences.getInstance(dataStore)
         mainViewModel = ViewModelProvider(
             this,
-            SettingPreferencesViewModelFactory(pref)
+            ViewModelFactory(pref)
         )[MainViewModel::class.java]
 
         mainViewModel.searchUser.observe(this) { items ->
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback {
             override fun onItemClicked(selectedUser: ItemsItem) {
                 val intent = Intent(this@MainActivity, UserDetailActivity::class.java)
-                intent.putExtra(UserDetailActivity.EXTRA_USER, selectedUser.login)
+                intent.putExtra(UserDetailActivity.EXTRA_LOGIN, selectedUser.login)
                 startActivity(intent)
             }
         })

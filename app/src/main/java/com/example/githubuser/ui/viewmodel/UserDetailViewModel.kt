@@ -42,12 +42,14 @@ class UserDetailViewModel(application: Application) : ViewModel() {
         }
     }
 
+    fun getAllFavoriteUser(): LiveData<List<GithubEntity>> = mGithubRepository.getAllFavoriteUser()
+
     fun insert(favoriteUser: GithubEntity) {
         mGithubRepository.insert(favoriteUser)
     }
 
-    fun delete(favoriteUser: GithubEntity) {
-        mGithubRepository.delete(favoriteUser)
+    fun delete(id: Int) {
+        mGithubRepository.delete(id)
     }
 
     companion object {

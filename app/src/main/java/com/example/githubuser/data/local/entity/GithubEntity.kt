@@ -11,12 +11,12 @@ import kotlinx.parcelize.Parcelize
 data class GithubEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    var id: Int = 0,
 
     @ColumnInfo(name = "login")
-    val login: String,
+    var login: String?,
 
     @ColumnInfo(name = "avatar_url")
-    val avatarUrl: String? = null
+    var avatarUrl: String? = null
 
 ) : Parcelable

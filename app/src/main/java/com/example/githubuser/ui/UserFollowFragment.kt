@@ -16,6 +16,7 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 class UserFollowFragment : Fragment() {
     private val userFollowViewModel by viewModels<UserFollowViewModel>()
     private var tabName: String? = null
+    private var login: String? = null
 
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding
@@ -32,28 +33,25 @@ class UserFollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tabName = arguments?.getString(ARG_TAB)
+        login = arguments?.getString(UserDetailActivity.EXTRA_LOGIN)
 
         if (tabName == TAB_FOLLOWER) {
-            userFollowViewModel.listFollower.observe(viewLifecycleOwner) { items ->
-                setFollowerDataUser(items)
+            userFollowViewModel.listFollower.observe(this.viewLifecycleOwner) { items ->
+                setFollowerUserData(items)
             }
-            userFollowViewModel.getFollowerUsers(
-                arguments?.getString(UserDetailActivity.EXTRA_USER).toString()
-            )
+            userFollowViewModel.getFollowerUsers(login)
         } else if (tabName == TAB_FOLLOWING) {
-            userFollowViewModel.listFollowing.observe(viewLifecycleOwner) { items ->
+            userFollowViewModel.listFollowing.observe(this.viewLifecycleOwner) { items ->
                 setFollowingUserData(items)
             }
-            userFollowViewModel.getFollowingUsers(
-                arguments?.getString(UserDetailActivity.EXTRA_USER).toString()
-            )
+            userFollowViewModel.getFollowingUsers(login)
         }
 
-        userFollowViewModel.isLoading.observe(viewLifecycleOwner) {
+        userFollowViewModel.isLoading.observe(this.viewLifecycleOwner) {
             showLoading(it)
         }
 
-        val layoutManager = LinearLayoutManager(requireActivity())
+        val layoutManager = LinearLayoutManager(this.context)
         binding?.rvUsers?.layoutManager = layoutManager
         val mItemDecoration =
             MaterialDividerItemDecoration(requireActivity(), layoutManager.orientation)
@@ -64,12 +62,12 @@ class UserFollowFragment : Fragment() {
 
     }
 
-    private fun setFollowingUserData(items: List<ItemsItem>) {
+    private fun setFollowerUserData(items: List<ItemsItem>) {
         val adapter = UserFollowAdapter(items)
         binding?.rvUsers?.adapter = adapter
     }
 
-    private fun setFollowerDataUser(items: List<ItemsItem>) {
+    private fun setFollowingUserData(items: List<ItemsItem>) {
         val adapter = UserFollowAdapter(items)
         binding?.rvUsers?.adapter = adapter
     }
