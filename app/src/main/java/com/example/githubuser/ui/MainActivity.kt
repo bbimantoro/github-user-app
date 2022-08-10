@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        supportActionBar?.title = "Github Search User"
         val layoutManager = LinearLayoutManager(this)
         binding.rvUsers.layoutManager = layoutManager
         val mItemDecoration = MaterialDividerItemDecoration(this, layoutManager.orientation)
@@ -64,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             setHasFixedSize(true)
             addItemDecoration(mItemDecoration)
         }
+
+        supportActionBar?.title = getString(R.string.appbar_title_home)
 
     }
 

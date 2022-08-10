@@ -8,7 +8,7 @@ import com.example.githubuser.ui.UserFollowFragment
 
 class SectionsPagerAdapter(activity: AppCompatActivity, private val mBundle: Bundle) :
     FragmentStateAdapter(activity) {
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = ITEM_COUNT
 
     override fun createFragment(position: Int): Fragment {
         val fragment = UserFollowFragment()
@@ -19,5 +19,9 @@ class SectionsPagerAdapter(activity: AppCompatActivity, private val mBundle: Bun
         }
         fragment.arguments = mBundle
         return fragment
+    }
+
+    companion object {
+        private const val ITEM_COUNT = 2
     }
 }

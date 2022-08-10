@@ -20,10 +20,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class UserDetailActivity : AppCompatActivity() {
     private lateinit var userDetailViewModel: UserDetailViewModel
-    private var login: String? = null
-    private var fabState = false
     private var favoriteUser: GithubEntity? = null
     private var detailUser = GithubUserDetailResponse()
+    private var login: String? = null
+    private var fabState = false
 
     private var _binding: ActivityUserDetailBinding? = null
     private val binding get() = _binding
@@ -56,18 +56,20 @@ class UserDetailActivity : AppCompatActivity() {
 
         binding?.addFavoriteFab?.setOnClickListener {
             if (!fabState) {
+                fabState = true
                 binding?.addFavoriteFab?.setImageResource(R.drawable.ic_favorite)
                 addUserFavorite(detailUser)
             } else {
+                fabState = false
                 binding?.addFavoriteFab?.setImageResource(R.drawable.ic_favorite_border)
                 userDetailViewModel.delete(detailUser.id)
-                showSnackbarMessage("Favorite user has been deleted")
+                showSnackbarMessage(getString(R.string.delete))
             }
         }
 
         setTabLayoutView()
 
-        supportActionBar?.title = "Detail User"
+        supportActionBar?.title = getString(R.string.appbar_title_detail)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
@@ -78,7 +80,7 @@ class UserDetailActivity : AppCompatActivity() {
             favoriteUser?.login = user.login
             favoriteUser?.avatarUrl = user.avatarUrl
             userDetailViewModel.insert(favoriteUser as GithubEntity)
-            showSnackbarMessage("Favorite user has been added")
+            showSnackbarMessage(getString(R.string.added))
         }
     }
 

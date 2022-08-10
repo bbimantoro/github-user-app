@@ -9,15 +9,25 @@
     <string name="repository">Repository</string>
     <string name="company">Company</string>
 
+    <string name="appbar_title_home">Github Search User</string>
+    <string name="appbar_title_detail">Detail User</string>
+    <string name="appbar_title_favorite">Favorite User</string>
+    <string name="appbar_title_setting">Setelan</string>
+
+    <string name="added">Favorite user berhasil ditambahkan</string>
+    <string name="delete">Favorite user berhasil dihapus</string>
+
     <string name="search">Search</string>
     <string name="search_hint">Cari Username</string>
     <string name="favorite">Favorite</string>
-    <string name="setting">Setting</string>
+    <string name="setting">Setelan</string>
 
 
     <string name="tab_follower">Followers</string>
     <string name="tab_following">Following</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode">Mode gelap</string>
+
+    <string name="add_new_favorite_user">Add new favorite user</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

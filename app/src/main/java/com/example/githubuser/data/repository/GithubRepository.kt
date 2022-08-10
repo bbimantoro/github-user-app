@@ -6,7 +6,6 @@ import androidx.lifecycle.asLiveData
 import com.example.githubuser.data.local.entity.GithubEntity
 import com.example.githubuser.data.local.room.GithubDao
 import com.example.githubuser.data.local.room.GithubRoomDatabase
-import java.util.concurrent.Callable
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

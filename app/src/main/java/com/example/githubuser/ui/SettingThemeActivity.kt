@@ -9,6 +9,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.example.githubuser.R
 import com.example.githubuser.data.repository.SettingPreferences
 import com.example.githubuser.databinding.ActivitySettingThemeBinding
 import com.example.githubuser.ui.viewmodel.SettingThemeViewModel
@@ -34,10 +35,16 @@ class SettingThemeActivity : AppCompatActivity() {
         settingThemeViewModel.getThemeSettings().observe(this) { isDarkModeActive ->
             if (isDarkModeActive) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                binding.switchTheme.isChecked = true
+                binding.apply {
+                    switchTheme.isChecked = true
+                    imageView.setImageResource(R.drawable.ic_dark_mode)
+                }
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                binding.switchTheme.isChecked = false
+                binding.apply {
+                    switchTheme.isChecked = false
+                    imageView.setImageResource(R.drawable.ic_wb_sunny)
+                }
             }
         }
 
@@ -45,6 +52,7 @@ class SettingThemeActivity : AppCompatActivity() {
             settingThemeViewModel.saveThemeSetting(isChecked)
         }
 
+        supportActionBar?.title = getString(R.string.appbar_title_setting)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }

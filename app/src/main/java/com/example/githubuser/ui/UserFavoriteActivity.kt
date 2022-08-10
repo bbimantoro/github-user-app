@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubuser.R
 import com.example.githubuser.databinding.ActivityUserFavoriteBinding
 import com.example.githubuser.ui.adapter.UserFavoriteAdapter
 import com.example.githubuser.ui.viewmodel.UserFavoriteViewModel
@@ -29,9 +30,6 @@ class UserFavoriteActivity : AppCompatActivity() {
         }
 
         adapter = UserFavoriteAdapter()
-
-        supportActionBar?.title = "Favorite User"
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val layoutManager = LinearLayoutManager(this)
         binding?.rvUserFavorite?.layoutManager = layoutManager
         binding?.rvUserFavorite?.adapter = adapter
@@ -40,6 +38,9 @@ class UserFavoriteActivity : AppCompatActivity() {
             setHasFixedSize(true)
             addItemDecoration(mItemDecoration)
         }
+
+        supportActionBar?.title = getString(R.string.appbar_title_favorite)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): UserFavoriteViewModel {
